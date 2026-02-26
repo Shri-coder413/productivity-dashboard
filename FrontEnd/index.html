@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>productivity Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="./assets/icons/productivity-icon.png" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div id="main">
+    <header>
+      <nav>
+        <h1>Productivity Dashboard</h1>
+        <div class="theme"><i class="ri-sun-line"></i></div>
+      </nav>
+    </header>
+
+
+    <main>
+      <section id="Cards">
+        <div id="0" class="card todo">
+          <h1>
+            To do List
+          </h1>
+        </div>
+
+        <div id="1" class="card daily">
+          <h1>
+            Daily Planner
+          </h1>
+        </div>
+
+        <div id="2" class="card quote">
+          <h1>
+            Motivational<br>Quotes
+          </h1>
+        </div>
+
+        <div id="3" class="card pomo-doro">
+          <h1>
+            Pomodoro Timer
+          </h1>
+        </div>
+        <div id="4" class="card goals">
+          <h1>
+            Daily Goal plan
+          </h1>
+        </div>
+      </section>
+
+      <section id="todoFullPage" class="full-page">
+        <div class="page-nav">
+          <h1>Your Personalised Task List</h1>
+          <button class=" close-btn" id="0">Back <i class="ri-arrow-go-back-line"></i></button>
+        </div>
+
+        <div class="todo-container">
+          <div id="add-todo-box">
+            <form action="#">
+              <input type="text" id="task-input" placeholder="Enter a task">
+              <textarea name="taskDetail" id="task-detail" placeholder="Enter a detail"></textarea>
+              <div class="mark-imp-checkbox">
+                <input type="checkbox" name="pririty" id="mark">
+                <label for="mark">Mark as Important</label>
+              </div>
+              <button id="add-task-btn" type="submit">Add Task</button>
+            </form>
+          </div>
+          <div class="task-list">
+          </div>
+        </div>
+      </section>
+
+      <section id="planner-page" class="full-page">
+        <div class="page-nav">
+          <h1>Plan your Day Productively</h1>
+          <button class="close-btn" id="1">Back <i class="ri-arrow-go-back-line"></i></button>
+        </div>
+        <div class="day-planner">
+        </div>
+
+      </section>
+
+      <section id="quotes-page" class="full-page">
+        <div class="page-nav">
+          <h1>Motivational Quotes</h1>
+          <button class=" close-btn" id="2">Back <i class="ri-arrow-go-back-line"></i></button>
+        </div>
+
+        <div class="motivation-container">
+          <div class="motivation-wrapper">
+            <div class="top-heading">Quote of the day</div>
+            <div class="middle-quote">
+              <h2></h2>
+              <img id="quote-icon-right" src="./assets/icons/icons8-quote-100.png" alt="quote-icon">
+              <img id="quote-icon-left" src="./assets/icons/icons8-quote-100.png" alt="quote-icon">
+            </div>
+            <div class="bottom-author">
+              <p></p>
+            </div>`
+          </div>
+        </div>
+
+
+      </section>
+
+      <section id="pomodoro-timer-page" class="full-page">
+        <div class="page-nav">
+          <h1>Study With Me!</h1>
+          <button class=" close-btn" id="3">Back <i class="ri-arrow-go-back-line"></i></button>
+        </div>
+        <div class="session">
+          <h4>Deep Work</h4>
+        </div>
+        <div class="timer-container">
+          <h1>25:00</h1>
+          <div class="timer-action-btns">
+            <button class="start-timer">Start</button>
+            <button class="pause-timer">Pause</button>
+            <button class="reset-timer">Reset</button>
+          </div>
+        </div>
+      </section>
+      <section id="daily-goal-page" class="full-page">
+        <div class="page-nav">
+          <h1>Today top 3 goals</h1>
+          <button class=" close-btn" id="3">Back <i class="ri-arrow-go-back-line"></i></button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+
+  <script src="script.js" defer></script>
+</body>
+
+</html>
