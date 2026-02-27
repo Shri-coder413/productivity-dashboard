@@ -105,7 +105,8 @@ function motivationalQuotes() {
 
   async function randomQuoteGenerator() {
     try {
-      const response = await fetch("http://localhost:3000/api/quote");
+      const URL = 'https://productivity-dashboard-vnug.onrender.com/api/quote'
+      const response = await fetch(URL);
       const data = await response.json();
 
       quote.innerHTML = `<h2>${data[0].quote}</h2>`;
