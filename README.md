@@ -6,6 +6,14 @@ get inspired by a dynamic **Quote of the Day** from an external API.
 
 ---
 
+🚀 Live Demo
+
+* Frontend: [https://productivity-dashboard-eight-tau.vercel.app/](https://productivity-dashboard-eight-tau.vercel.app/)
+
+* Backend API: https://your-render-url.onrender.com/api/quote
+
+---
+
 ## 🧠 Features
 
 * **Quote of the Day** – secured via backend API proxy
