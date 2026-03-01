@@ -16,14 +16,24 @@
 
 :root {
   --pri: #f7ebaf;
-  --sec: #FFCE99;
-  --tri1: #FF9644;
-  --tri2: #842A3B;
+  --sec: #ffce99;
+  --tri1: #ff9644;
+  --tri2: #842a3b;
 
-  --green: #4ad82a;
+  --green: rgb(3, 170, 3);
   --white: whitesmoke;
   --red: red;
   --blue: #00b7ff;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
 }
 
 * {
@@ -36,11 +46,53 @@
 html,
 body {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
 }
 body {
   color: var(--white);
   background-color: var(--tri2);
+}
+
+#main {
+  min-height: 100vh;
+  height: auto;
+}
+
+section {
+  padding: 1.5rem 1rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+.home-view.hidden {
+  display: none;
+}
+
+h1 {
+  font-size: clamp(1.4rem, 2vw, 2.2rem);
+}
+
+h2 {
+  font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+}
+
+p,
+input,
+textarea,
+button {
+  font-size: clamp(0.9rem, 1vw, 1rem);
 }
 
 div#main {
@@ -97,63 +149,54 @@ nav .theme i:active {
 main {
   width: 100%;
   height: 320px;
-  padding-inline: 2vw;
 }
-section#Cards {
-  width: 90%;
-  height: 100%;
+
+#tags {
+  width: 80%;
   margin: 0 auto;
   display: flex;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-  padding: 2vw;
+  gap: 12px;
+  padding-bottom: 1rem;
 }
 
-.card {
-  width: 300px;
-  height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.2rem;
+.tag {
+  padding: 8px 16px;
   border-radius: 10px;
-  background-size: cover;
-  background-position: center;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: 0.2s ease;
+  letter-spacing: 1px;
+  cursor: pointer;
   background-color: var(--pri);
+  opacity: 0.8;
 }
 
-.card h1 {
-  font-weight: 700;
-  font-size: 2rem;
-  white-space: nowrap;
+.tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
 }
 
-.todo {
-  background-image: url('./assets/images/To-do-list.avif');
-}
-.daily {
-  background-image: url('./assets/images/daily-planner.avif');
-}
-.quote {
-  background-image: url('./assets/images/motivational-quote.avif');
-}
-.pomo-doro {
-  background-image: url('./assets/images/pomodoro-timer.avif');
-}
-.goals {
-  background-image: url('./assets/images/daily-goals.avif');
+.tag:active {
+  outline: 2px solid var(--white);
 }
 
 .full-page {
-  width: 100%;
-  height: 100%;
   display: none;
+  opacity: 0;
+  width: 100%;
+  min-height: 100vh;
   position: absolute;
   top: 0;
   left: 0;
   background-color: var(--tri2);
   overflow: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.full-page.active {
+  display: block;
+  opacity: 1;
 }
 
 .page-nav {
@@ -277,6 +320,12 @@ button#add-task-btn:active {
   background-color: var(--pri);
   align-items: center;
   justify-content: space-between;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.task:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
 }
 
 .task h2 {
@@ -336,40 +385,35 @@ button#add-task-btn:active {
   color: var(--tri2);
 }
 
-section#planner-page {
+section#daily {
   width: 100%;
   height: 100%;
 }
 
-#planner-page .day-planner {
-  height: 80%;
-  width: 80%;
-  margin: 0 auto;
-  border-radius: 20px;
+.planner-wrapper {
+  width: 95%;
+  max-width: 1200px;
+  margin: var(--space-lg) auto;
+  padding: var(--space-md);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-md);
   background-color: var(--sec);
-  padding: 1.5vw;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 25px;
-  justify-content: center;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 20px 0;
+  border-radius: var(--radius-lg);
 }
 
-.day-planner::-webkit-scrollbar {
+.planner-wrapper::-webkit-scrollbar {
   display: none;
 }
 
-.day-planner .daily-plan {
-  width: 45%;
-  border-radius: 10px;
-  overflow: hidden;
+.plan {
+  border-radius: var(--radius-sm);
   border: 2px solid var(--white);
   background-color: var(--tri2);
+  padding: var(--space-sm);
 }
 
-.daily-plan input {
+.plan input {
   width: 100%;
   padding: 10px 20px;
   border: none;
@@ -380,13 +424,13 @@ section#planner-page {
   background-color: var(--tri2);
 }
 
-.daily-plan input::placeholder {
+.plan input::placeholder {
   font-size: 2rem;
   color: var(--white);
   padding-left: 15px;
 }
 
-.daily-plan p#time {
+.plan p#time {
   width: fit-content;
   padding: 5px 10px;
   font-size: 1.2rem;
@@ -394,20 +438,19 @@ section#planner-page {
   color: var();
   background-color: var(--red);
   color: var(--pri);
-  border-bottom: 2px solidvar(--white);
+  border-bottom: 2px solid var(--white);
 }
 
-section#quotes-page {
+section#quote {
   width: 100%;
   height: 100%;
 }
 
 .motivation-container {
   width: 60%;
-  height: 70%;
-  margin: 0 auto;
+  height: 80%;
+  margin: 30px auto;
   position: relative;
-  margin-top: 50px;
   background-color: var(--pri);
   border: 3px solid var(--pri);
   border-radius: 25px;
@@ -451,13 +494,13 @@ section#quotes-page {
 }
 
 img#quote-icon-right {
-  opacity: 0.8;
+  opacity: 0.6;
   position: absolute;
   bottom: 5%;
   right: 2%;
 }
 img#quote-icon-left {
-  opacity: 0.8;
+  opacity: 0.6;
   position: absolute;
   top: 5%;
   left: 2%;
@@ -478,77 +521,197 @@ img#quote-icon-left {
   color: var(--tri2);
 }
 
-section#pomodoro-timer-page {
+section#pomodoro {
   width: 100%;
-  height: 100%;
+  height: 100vh;
 }
-
-#pomodoro-timer-page .session {
+.pomodoro-wrapper {
   width: 80%;
-  height: 10%;
-  margin: 2rem auto;
+  margin: 0 auto;
+  height: 70vh;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.pomodoro-timer {
+  width: min(85vw, 380px);
+  height: min(85vw, 380px);
+  display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  background:
+    conic-gradient(var(--green) 0deg, transparent 0deg),
+    radial-gradient(circle, var(--tri1), var(--tri2));
+
+  transition: background 0.3s linear;
 }
-#pomodoro-timer-page .session h4 {
-  padding: 10px 20px;
-  font-size: 1.5rem;
+
+.pomodoro-timer h1 {
+  font-family: monospace;
+  font-size: clamp(2.5rem, 8vw, 6rem);
   font-weight: 700;
-  color: var(--white);
-  border-radius: 5px;
+  color: var(--pri);
+  white-space: nowrap;
+}
+
+.session {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 6px;
   background-color: var(--green);
 }
 
-.timer-container {
-  position: relative;
-  width: fit-content;
-  margin: 0 auto;
-  height: 320px;
-  overflow: hidden;
-  border-radius: 5px;
-  border: 2px solid var(--white);
-  background-color: var(--tri1);
+.session h4 {
+  padding: 6px 16px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--white);
+  border-radius: 6px;
 }
-.timer-action-btns {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  gap: 20px;
-  width: 100%;
-  height: 25%;
-  padding: 2rem;
+
+.pomodoro-action-btns {
+  width: 80%;
+  height: fit-content;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  border-top: 3px solid var(--pri);
-  background-color: var(--sec);
+  justify-content: center;
+  gap: 1.5rem;
 }
 
-.timer-container button {
-  border: none;
-  outline: none;
-  padding: 10px 20px;
+.pomodoro-action-btns button {
+  padding: 10px 18px;
   font-size: 1.5rem;
   font-weight: 500;
+  cursor: pointer;
   color: var(--white);
-  text-transform: uppercase;
-  background-color: var(--tri2);
-  box-shadow: 5px 5px 2px #000;
-}
-.timer-container button:active {
-  scale: 0.9;
-  opacity: 0.5;
-}
-.timer-container h1 {
-  font-size: 10rem;
-  font-weight: 700;
-  padding: 3rem;
-  text-align: center;
-  color: var(--pri);
+  border: 2px solid var(--pri);
+  background-color: transparent;
+  transition:
+    transform 0.1s ease,
+    opacity 0.1s ease;
 }
 
-section#goals-page {
+.pomodoro-action-btns button:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+section#goals {
   width: 100%;
   height: 100%;
+}
+.goal-container {
+  width: 95%;
+  max-width: 600px;
+  margin: var(--space-lg) auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.goal-container input {
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--pri);
+}
+
+@media (max-width: 768px) {
+  nav {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  nav h1 {
+    font-size: 1.3rem;
+  }
+
+  nav .theme {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 900px) {
+  .todo-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  #add-todo-box,
+  .task-list {
+    width: 100%;
+    height: auto;
+  }
+}
+
+#vision-board {
+  width: 80%;
+  height: fit-content;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 280px;
+  gap: 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#vision-board .grid-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #000;
+  background: #f5f5f5;
+}
+
+.grid-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.4s ease;
+}
+.card--wide {
+  grid-column: span 2;
+}
+.card--tall {
+  grid-row: span 2;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.card-content {
+  position: absolute;
+  opacity: 0;
+  z-index: 2;
+  left: 20px;
+  bottom: 20px;
+  color: white;
+  transition: opacity 0.4s ease;
+}
+
+.grid-card:hover img {
+  transform: scale(1.1);
+}
+
+.grid-card:hover .overlay,
+.grid-card:hover .card-content {
+  opacity: 1;
 }

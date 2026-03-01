@@ -21,41 +21,87 @@
 
 
     <main>
-      <section id="Cards">
-        <div id="0" class="card todo">
-          <h1>
-            To do List
-          </h1>
-        </div>
+      <div class="home-view">
+        <section id="tags">
+          <button class="tag todo" data-page="todos">To do List</button>
+          <button class="tag daily" data-page="planner">Daily Planner</button>
+          <button class="tag quote" data-page="quotes">Motivational Quotes</button>
+          <button class="tag pomo" data-page="pomodoro">Pomodoro Timer</button>
+          <button class="tag goals" data-page="goals">Daily Goal Plan</button>
+        </section>
 
-        <div id="1" class="card daily">
-          <h1>
-            Daily Planner
-          </h1>
-        </div>
 
-        <div id="2" class="card quote">
-          <h1>
-            Motivational<br>Quotes
-          </h1>
-        </div>
+        <div id="vision-board">
+          <div class="grid-card card--tall" data-index="0">
+            <img src="./assets/images/vision-healthy.jpg" alt="healthyMan-jpg">
 
-        <div id="3" class="card pomo-doro">
-          <h1>
-            Pomodoro Timer
-          </h1>
-        </div>
-        <div id="4" class="card goals">
-          <h1>
-            Daily Goal plan
-          </h1>
-        </div>
-      </section>
+            <div class="overlay"></div>
 
-      <section id="todoFullPage" class="full-page">
+            <div class="card-content">
+              <h3>Health</h3>
+              <button class="change-img-btn">Change Image</button>
+              <input type="file" class="img-input" accept="image/*" hidden>
+            </div>
+          </div>
+
+          <div class="grid-card card--wide" data-index="1">
+            <img src="./assets/images/vision-success.jpg" alt="">
+            <div class="overlay"></div>
+            <div class="card-content">
+              <h3 contenteditable="true">Happiness</h3>
+              <button class="change-img-btn">Change Image</button>
+              <input type="file" class="img-input" accept="image/*" hidden>
+            </div>
+          </div>
+
+          <div class="grid-card " data-index="2">
+            <img src="./assets/images/vision-home.jpg" alt="">
+            <div class="overlay"></div>
+            <div class="card-content">
+              <h3 contenteditable="true">Wealth</h3>
+              <button class="change-img-btn">Change Image</button>
+              <input type="file" class="img-input" accept="image/*" hidden>
+            </div>
+          </div>
+
+          <div class="grid-card " data-index="3">
+            <img src="./assets/images/vision-career.jpg" alt="">
+            <div class="overlay"></div>
+            <div class="card-content">
+              <h3 contenteditable="true">Career</h3>
+              <button class="change-img-btn">Change Image</button>
+              <input type="file" class="img-input" accept="image/*" hidden>
+            </div>
+          </div>
+
+          <div class="grid-card " data-index="4">
+            <img src="./assets/images/vision-relations.jpg" alt="">
+
+            <div class="overlay"></div>
+            <div class="card-content">
+              <h3 contenteditable="true">Relationship</h3>
+              <button class="change-img-btn">Change Image</button>
+              <input type="file" class="img-input" accept="image/*" hidden>
+            </div>
+          </div>
+
+          <div class="grid-card " data-index="5">
+            <img src="./assets/images/vision-travel.jpg" alt="">
+            <div class="overlay"></div>
+            <div class="card-content">
+              <h3 contenteditable="true">Traveling</h3>
+              <button class="change-img-btn">Change Image</button>
+              <input type="file" class="img-input" accept="image/*" hidden>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <section id="todos" class="full-page">
         <div class="page-nav">
           <h1>Your Personalised Task List</h1>
-          <button class=" close-btn" id="0">Back <i class="ri-arrow-go-back-line"></i></button>
+          <button class=" close-btn" data-page="todos">Back <i class="ri-arrow-go-back-line"></i></button>
         </div>
 
         <div class="todo-container">
@@ -75,20 +121,19 @@
         </div>
       </section>
 
-      <section id="planner-page" class="full-page">
+      <section id="planner" class="full-page">
         <div class="page-nav">
           <h1>Plan your Day Productively</h1>
-          <button class="close-btn" id="1">Back <i class="ri-arrow-go-back-line"></i></button>
+          <button class="close-btn" data-page="planner">Back <i class="ri-arrow-go-back-line"></i></button>
         </div>
-        <div class="day-planner">
+        <div class="planner-wrapper">
         </div>
-
       </section>
 
-      <section id="quotes-page" class="full-page">
+      <section id="quotes" class="full-page">
         <div class="page-nav">
           <h1>Motivational Quotes</h1>
-          <button class=" close-btn" id="2">Back <i class="ri-arrow-go-back-line"></i></button>
+          <button class=" close-btn" data-page="quotes">Back <i class="ri-arrow-go-back-line"></i></button>
         </div>
 
         <div class="motivation-container">
@@ -101,41 +146,50 @@
             </div>
             <div class="bottom-author">
               <p></p>
-            </div>`
+            </div>
           </div>
         </div>
-
-
       </section>
 
-      <section id="pomodoro-timer-page" class="full-page">
+      <section id="pomodoro" class="full-page">
         <div class="page-nav">
-          <h1>Study With Me!</h1>
-          <button class=" close-btn" id="3">Back <i class="ri-arrow-go-back-line"></i></button>
+          <h1>Study With Me !</h1>
+          <button class=" close-btn" data-page="pomodoro">Back <i class="ri-arrow-go-back-line"></i></button>
         </div>
-        <div class="session">
-          <h4>Deep Work</h4>
-        </div>
-        <div class="timer-container">
-          <h1>25:00</h1>
-          <div class="timer-action-btns">
+
+        <div class="pomodoro-wrapper">
+          <div class="pomodoro-timer">
+            <h1>25:00</h1>
+            <div class="session">
+              <h4>Deep Work</h4>
+            </div>
+          </div>
+
+          <div class="pomodoro-action-btns">
             <button class="start-timer">Start</button>
             <button class="pause-timer">Pause</button>
             <button class="reset-timer">Reset</button>
           </div>
         </div>
-      </section>
-      <section id="daily-goal-page" class="full-page">
-        <div class="page-nav">
-          <h1>Today top 3 goals</h1>
-          <button class=" close-btn" id="3">Back <i class="ri-arrow-go-back-line"></i></button>
-        </div>
-      </section>
-    </main>
+  </div>
+  </section>
+
+  <section id="goals" class="full-page">
+    <div class="page-nav">
+      <h1>Today top 3 goals</h1>
+      <button class="close-btn" data-page="goals">Back <i class="ri-arrow-go-back-line"></i></button>
+    </div>
+    <div class="goal-container">
+      <input type="text" placeholder="Goal 1">
+      <input type="text" placeholder="Goal 2">
+      <input type="text" placeholder="Goal 3">
+    </div>
+  </section>
+  </main>
   </div>
 
 
-  <script src="script.js" defer></script>
+  <script src="script.js"></script>
 </body>
 
 </html>

@@ -1,20 +1,36 @@
 function openCloseFeature() {
-  const cards = document.querySelectorAll(".card");
-  const fullPages = document.querySelectorAll(".full-page");
-  const closeBtns = document.querySelectorAll(".page-nav .close-btn");
+  const homeView = document.querySelector(".home-view");
+  const tagContainer = document.querySelector("#tags");
 
-  cards.forEach((card) => {
-    card.addEventListener("click", () => {
-      fullPages[card.id].style.display = "block";
-    });
+  // OPEN PAGE (event delegation)
+  tagContainer.addEventListener("click", (e) => {
+    const tag = e.target.closest(".tag");
+
+    if (!tag) return;
+
+    const targetPage = tag.dataset.page;
+
+    homeView.classList.add("hidden");
+
+    document
+      .querySelectorAll(".full-page")
+      .forEach((page) => page.classList.remove("active"));
+
+    document.getElementById(targetPage).classList.add("active");
   });
 
-  closeBtns.forEach((closeBtn) => {
-    closeBtn.addEventListener("click", () => {
-      fullPages[closeBtn.id].style.display = "none";
-    });
+  // CLOSE PAGE
+  document.addEventListener("click", (e) => {
+    const closeBtn = e.target.closest(".close-btn");
+    if (!closeBtn) return;
+
+    const targetPage = closeBtn.dataset.page;
+
+    homeView.classList.remove("hidden");
+    document.getElementById(targetPage).classList.remove("active");
   });
 }
+
 function todoList() {
   let allTasks = [];
 
@@ -71,8 +87,9 @@ function todoList() {
     checkMark.checked = false;
   });
 }
+
 function dailyPlanner() {
-  const dayPlanner = document.querySelector(".day-planner");
+  const dayPlanner = document.querySelector(".planner-wrapper");
   const dayPlanData = JSON.parse(localStorage.getItem("dayPlanData")) || {};
 
   let hours = Array.from(
@@ -83,7 +100,7 @@ function dailyPlanner() {
 
   hours.forEach(function (elem, idx) {
     let savedData = dayPlanData[idx] || "";
-    wholeDayPlan += `<div class="daily-plan">
+    wholeDayPlan += `<div class="plan">
     <p id="time">${elem}</p>
     <input id="${idx}" class="title" type="text" placeholder="...." value="${savedData}">
     </div>`;
@@ -105,7 +122,7 @@ function motivationalQuotes() {
 
   async function randomQuoteGenerator() {
     try {
-      const URL = 'https://productivity-dashboard-vnug.onrender.com/api/quote'
+      const URL = "https://productivity-dashboard-vnug.onrender.com/api/quote";
       const response = await fetch(URL);
       const data = await response.json();
 
@@ -118,13 +135,14 @@ function motivationalQuotes() {
   randomQuoteGenerator();
 }
 function pomodoroTimer() {
-  const startBtn = document.querySelector(".timer-action-btns .start-timer");
-  const pauseBtn = document.querySelector(".timer-action-btns .pause-timer");
-  const resetBtn = document.querySelector(".timer-action-btns .reset-timer");
+  const startBtn = document.querySelector(".start-timer");
+  const pauseBtn = document.querySelector(".pause-timer");
+  const resetBtn = document.querySelector(".reset-timer");
 
-  const timer = document.querySelector(".timer-container h1");
+  const timer = document.querySelector(".pomodoro-timer h1");
+
   let isWorkSession = true;
-  let totalSeconds = 25 * 60; //1500
+  let totalSeconds = 25 * 60;
   let timerInterval = null;
 
   function updateTimer() {
@@ -132,8 +150,7 @@ function pomodoroTimer() {
     let seconds = totalSeconds % 60;
 
     console.log(minutes, seconds);
-
-    timer.innerHTML = `${String(minutes).padStart("2", "0")} : ${String(seconds).padStart("2", "0")}`;
+    timer.innerHTML = `${String(minutes).padStart("2", "0")}:${String(seconds).padStart("2", "0")}`;
   }
 
   const session = document.querySelector(".session h4");
@@ -152,7 +169,7 @@ function pomodoroTimer() {
           totalSeconds = 5 * 60;
           timer.innerHTML = `05:00`;
           session.innerHTML = "Take A Break";
-          session.style.backgroundColor = `const(--blue)`;
+          session.style.backgroundColor = `var(--blue)`;
         }
       }, 1000);
     } else {
@@ -166,7 +183,7 @@ function pomodoroTimer() {
           totalSeconds = 25 * 60;
           timer.innerHTML = `25:00`;
           session.innerHTML = "Deep Work";
-          session.style.backgroundColor = " const(--green)";
+          session.style.backgroundColor = " var(--green)";
         }
       }, 1000);
     }
@@ -180,7 +197,7 @@ function pomodoroTimer() {
     totalSeconds = 25 * 60;
     timer.innerHTML = `25:00`;
     session.innerHTML = "Deep Work";
-    session.style.backgroundColor = " const(--green)";
+    session.style.backgroundColor = "var(--green)";
     updateTimer();
   }
 
@@ -222,9 +239,60 @@ function changeTheme() {
   });
 }
 
+function visionBoard() {
+  const cards = document.querySelectorAll(".grid-card");
+
+  let visionData = JSON.parse(localStorage.getItem("visionData")) || [];
+
+  cards.forEach((card, index) => {
+    const img = card.querySelector("img");
+    const input = card.querySelector(".img-input");
+    const button = card.querySelector(".change-img-btn");
+    const title = card.querySelector("h3");
+
+    // Load saved data
+    if (visionData[index]) {
+      img.src = visionData[index].img;
+      title.innerText = visionData[index].text;
+    }
+
+    // Change image
+    button.addEventListener("click", () => {
+      input.click();
+    });
+
+    input.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        img.src = reader.result;
+
+        visionData[index] = {
+          img: reader.result,
+          text: title.innerText,
+        };
+
+        localStorage.setItem("visionData", JSON.stringify(visionData));
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    title.addEventListener("input", () => {
+      visionData[index] = {
+        img: img.src,
+        text: title.innerText,
+      };
+
+      localStorage.setItem("visionData", JSON.stringify(visionData));
+    });
+  });
+}
 changeTheme();
 openCloseFeature();
 todoList();
 dailyPlanner();
 motivationalQuotes();
 pomodoroTimer();
+visionBoard();
