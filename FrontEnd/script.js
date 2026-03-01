@@ -140,66 +140,97 @@ function pomodoroTimer() {
   const resetBtn = document.querySelector(".reset-timer");
 
   const timer = document.querySelector(".pomodoro-timer h1");
+  const circle = document.querySelector(".pomodoro-timer");
+  const session = document.querySelector(".session h4");
 
   let isWorkSession = true;
   let totalSeconds = 25 * 60;
+  let initialDuration = 25 * 60;
   let timerInterval = null;
+
+  function updateProgress() {
+    const progressRatio = 1 - totalSeconds / initialDuration;
+    const degrees = progressRatio * 360;
+
+    // dynamic overlay color
+    const overlayColor = isWorkSession
+      ? "rgba(0, 255, 0, 0.25)" // work = green
+      : "rgba(0, 120, 255, 0.25)"; // break = blue
+
+    circle.style.background = `
+      conic-gradient(
+        from 0deg,
+        ${overlayColor} 0deg,
+        ${overlayColor} ${degrees}deg,
+        transparent ${degrees}deg,
+        transparent 360deg
+      ),
+      radial-gradient(circle, var(--tri1), var(--tri2))
+    `;
+  }
 
   function updateTimer() {
     let minutes = Math.floor(totalSeconds / 60);
     let seconds = totalSeconds % 60;
 
-    console.log(minutes, seconds);
-    timer.innerHTML = `${String(minutes).padStart("2", "0")}:${String(seconds).padStart("2", "0")}`;
+    timer.innerHTML = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+    updateProgress();
   }
 
-  const session = document.querySelector(".session h4");
-
-  function startTimer() {
-    clearInterval(timerInterval);
+  function switchSession() {
+    isWorkSession = !isWorkSession;
 
     if (isWorkSession) {
-      timerInterval = setInterval(() => {
-        if (totalSeconds > 0) {
-          totalSeconds--;
-          updateTimer();
-        } else {
-          clearInterval(timerInterval);
-          isWorkSession = false;
-          totalSeconds = 5 * 60;
-          timer.innerHTML = `05:00`;
-          session.innerHTML = "Take A Break";
-          session.style.backgroundColor = `var(--blue)`;
-        }
-      }, 1000);
+      totalSeconds = 25 * 60;
+      initialDuration = 25 * 60;
+      session.innerHTML = "Deep Work";
+      session.style.backgroundColor = "var(--green)";
     } else {
-      timerInterval = setInterval(() => {
-        if (totalSeconds > 0) {
-          totalSeconds--;
-          updateTimer();
-        } else {
-          clearInterval(timerInterval);
-          isWorkSession = true;
-          totalSeconds = 25 * 60;
-          timer.innerHTML = `25:00`;
-          session.innerHTML = "Deep Work";
-          session.style.backgroundColor = " var(--green)";
-        }
-      }, 1000);
+      totalSeconds = 5 * 60;
+      initialDuration = 5 * 60;
+      session.innerHTML = "Take A Break";
+      session.style.backgroundColor = "var(--blue)";
     }
+
+    updateTimer();
   }
+
+  function startTimer() {
+    if (timerInterval) return;
+
+    timerInterval = setInterval(() => {
+      if (totalSeconds > 0) {
+        totalSeconds--;
+        updateTimer();
+      } else {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        switchSession();
+      }
+    }, 1000); // REAL seconds
+  }
+
   function pauseTimer() {
     clearInterval(timerInterval);
+    timerInterval = null;
   }
 
   function resetTimer() {
     clearInterval(timerInterval);
+    timerInterval = null;
+
+    isWorkSession = true;
     totalSeconds = 25 * 60;
-    timer.innerHTML = `25:00`;
+    initialDuration = 25 * 60;
+
     session.innerHTML = "Deep Work";
     session.style.backgroundColor = "var(--green)";
+
     updateTimer();
   }
+
+  updateTimer();
 
   startBtn.addEventListener("click", startTimer);
   pauseBtn.addEventListener("click", pauseTimer);
