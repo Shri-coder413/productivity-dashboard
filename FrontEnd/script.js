@@ -578,6 +578,7 @@ function changeTheme() {
     { pri: "#F7F8F0", sec: "#9CD5FF", tri1: "#7AAACE", tri2: "#355872" },
     { pri: "#FFFDF1", sec: "#FFCE99", tri1: "#FF9644", tri2: "#562F00" },
     { pri: "#F7F7F7", sec: "#777c8b", tri1: "#393E46", tri2: "#222831" },
+    { pri: "#f7ebaf", sec: "#f8e4af", tri1: "#ee8d42", tri2: "#842a3b" },
   ];
 
   let currentIndex = parseInt(localStorage.getItem("themeIndex")) || 0;

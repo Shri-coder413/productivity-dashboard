@@ -19,13 +19,13 @@
 :root {
   --pri: #f7ebaf;
   --sec: #f8e4af;
-  --tri1: #ff9644;
+  --tri1: #ee8d42;
   --tri2: #842a3b;
 
   --green: rgb(3, 170, 3);
   --white: whitesmoke;
-  --red: red;
-  --blue: #00b7ff;
+  --red: rgb(186, 15, 15);
+  --blue: #079dd9;
 
   --space-xs: 0.5rem;
   --space-sm: 1rem;
@@ -117,10 +117,10 @@ nav,
 }
 
 nav h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 500;
   color: var(--pri);
-  margin-top: 4px;
+  margin:var(--space-xs);
 }
 
 .nav-left {
@@ -284,18 +284,17 @@ nav .theme-toggle:hover {
   display: flex;
   margin: 2px auto;
   align-items: center;
-  padding: var(--space-xs);
   justify-content: center;
 }
 
 .section-header h2 {
-  font-size: clamp(1.5rem, 2vw, 2.5rem);
+  font-size: clamp(1.5rem, 2vw, 3rem);
   font-weight: 200;
   font-style: italic;
   color: var(--pri);
   letter-spacing: 2px;
   line-height: 2;
-  margin-bottom: var(--space-md);
+  text-transform: uppercase;
 }
 
 .section-header .close-btn {
@@ -751,7 +750,6 @@ section#habit-view {
   font-size: clamp(1.5rem, 1.8vw, 2rem);
   font-weight: 700;
   text-align: center;
-  margin-top: var(--space-md);
 }
 
 .habit-wrapper {
