@@ -1,96 +1,219 @@
 function openCloseFeature() {
-  const homeView = document.querySelector(".home-view");
-  const tagContainer = document.querySelector("#tags");
+  const sidebar = document.getElementById("sidebar");
+  if (!sidebar) return;
 
-  // OPEN PAGE (event delegation)
-  tagContainer.addEventListener("click", (e) => {
-    const tag = e.target.closest(".tag");
+  const allViews = document.querySelectorAll(".app-view");
+  const viewButtons = document.querySelectorAll(".view-btn");
 
-    if (!tag) return;
+  function renderView(viewName) {
+    const targetedView = document.getElementById(`${viewName}-view`);
+    if (!targetedView) {
+      console.error(`View ${viewName} not found`);
+      return;
+    }
 
-    const targetPage = tag.dataset.page;
+    // Clear all views
+    allViews.forEach((view) => {
+      view.classList.remove("active");
+    });
 
-    homeView.classList.add("hidden");
+    // Activate selected view
+    targetedView.classList.add("active");
 
-    document
-      .querySelectorAll(".full-page")
-      .forEach((page) => page.classList.remove("active"));
+    // Update active button state
+    viewButtons.forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.view === viewName);
+    });
+  }
 
-    document.getElementById(targetPage).classList.add("active");
-  });
+  sidebar.addEventListener("click", function (e) {
+    const button = e.target.closest(".view-btn");
+    if (!button) return;
 
-  // CLOSE PAGE
-  document.addEventListener("click", (e) => {
-    const closeBtn = e.target.closest(".close-btn");
-    if (!closeBtn) return;
-
-    const targetPage = closeBtn.dataset.page;
-
-    homeView.classList.remove("hidden");
-    document.getElementById(targetPage).classList.remove("active");
+    const viewName = button.dataset.view;
+    renderView(viewName);
   });
 }
 
-function todoList() {
-  let allTasks = [];
+function openSideBar() {
+  const menuBtn = document.querySelector("#menu-btn");
+  const sidebar = document.querySelector("#sidebar");
 
-  if (localStorage.getItem("allTasks")) {
-    allTasks = JSON.parse(localStorage.getItem("allTasks"));
-  } else {
-    console.log("Task is empty");
+  if (!menuBtn || !sidebar) return;
+
+  menuBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+  });
+
+  // Close when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+      sidebar.classList.remove("open");
+    }
+  });
+}
+
+function taskEngine() {
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  let runningTaskId = null;
+  let currentFilter = "active";
+
+  const form = document.querySelector("#task-form");
+  const taskList = document.querySelector(".task-list");
+  const filters = document.querySelectorAll(".filter");
+  const emptyState = document.querySelector(".empty-state");
+
+  if (!form) return;
+
+  function todayStamp() {
+    return new Date().toISOString().split("T")[0];
+  }
+
+  function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
+
+  function activeCount() {
+    return tasks.filter((t) => !t.completed && t.dailyStamp === todayStamp())
+      .length;
+  }
+
+  function dailyCount() {
+    return tasks.filter((t) => t.dailyStamp === todayStamp()).length;
   }
 
   function renderTasks() {
-    let taskElem = "";
+    taskList.innerHTML = "";
 
-    const taskList = document.querySelector(".task-list");
+    const filteredTasks = tasks
+      .filter((task) =>
+        currentFilter === "active" ? !task.completed : task.completed,
+      )
+      .sort((a, b) => a.priority - b.priority);
 
-    allTasks.forEach((elem, idx) => {
-      taskElem += `<div class="task">
-    <h2>${elem.title}<span id="${elem.imp}">Imp</span></h2>
-    <button class="done-btn" id="${idx}">done</button>
-    </div>`;
-    });
+    emptyState.style.display = filteredTasks.length === 0 ? "block" : "none";
 
-    taskList.innerHTML = taskElem;
+    filteredTasks.forEach((task) => {
+      const taskDiv = document.createElement("div");
+      taskDiv.className = `task ${task.completed ? "completed" : ""}`;
 
-    localStorage.setItem("allTasks", JSON.stringify(allTasks));
+      taskDiv.innerHTML = `
+        <div class="task-overlay"></div>
 
-    document.querySelectorAll(".done-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        allTasks.splice(btn.id, 1);
-        renderTasks();
+        <div>
+          <div class="task-title">
+            ${task.priority} ${task.title}
+          </div>
+          <div class="task-meta">
+            ${task.minutes} minutes
+          </div>
+        </div>
+
+        ${!task.completed ? `<button class="start-btn">Start</button>` : ""}
+      `;
+
+      const overlay = taskDiv.querySelector(".task-overlay");
+      const startBtn = taskDiv.querySelector(".start-btn");
+
+      if (task.startedAt && !task.completed) {
+        startBtn.classList.add("running");
+        startBtn.textContent = "Running";
+        startTimer(task, overlay);
+      }
+
+      startBtn?.addEventListener("click", () => {
+        if (runningTaskId) {
+          alert("Only one task at a time.");
+          return;
+        }
+
+        task.startedAt = Date.now();
+        runningTaskId = task.id;
+
+        startBtn.classList.add("running");
+        startBtn.textContent = "Running";
+
+        saveTasks();
+        startTimer(task, overlay);
       });
+
+      taskList.appendChild(taskDiv);
     });
+
+    saveTasks();
   }
 
-  renderTasks();
+  function startTimer(task, overlay) {
+    const totalTime = task.minutes * 60000;
 
-  const form = document.querySelector("#add-todo-box form");
-  const taskInput = document.querySelector("#task-input");
-  const taskDetail = document.querySelector("#task-detail");
-  const checkMark = document.querySelector("#mark");
+    const interval = setInterval(() => {
+      const elapsedTime = Date.now() - task.startedAt;
+      const progress = Math.min(elapsedTime / totalTime, 1);
 
-  form.addEventListener("submit", (e) => {
+      overlay.style.width = progress * 100 + "%";
+
+      if (progress >= 1) {
+        clearInterval(interval);
+        task.completed = true;
+        runningTaskId = null;
+        saveTasks();
+        renderTasks();
+      }
+    }, 1000);
+  }
+
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    allTasks.push({
-      title: taskInput.value,
-      description: taskDetail.value,
-      imp: checkMark.checked,
+    if (activeCount() >= 3) {
+      alert("Complete 3 tasks first.");
+      return;
+    }
+
+    if (dailyCount() >= 5) {
+      alert("Daily limit reached.");
+      return;
+    }
+
+    const title = document.querySelector("#task-input").value.trim();
+    const minutes = parseInt(document.querySelector("#task-time").value);
+    const priority = parseInt(document.querySelector("#task-priority").value);
+
+    tasks.push({
+      id: Date.now(),
+      title: title,
+      minutes: minutes,
+      priority: priority,
+      createdAt: Date.now(),
+      startedAt: null,
+      completed: false,
+      dailyStamp: todayStamp(),
     });
 
+    form.reset();
+    saveTasks();
     renderTasks();
-
-    taskInput.value = "";
-    taskDetail.value = "";
-    checkMark.checked = false;
   });
+
+  filters.forEach((button) => {
+    button.addEventListener("click", function () {
+      document.querySelector(".filter.active").classList.remove("active");
+
+      this.classList.add("active");
+      currentFilter = this.dataset.filter;
+
+      renderTasks();
+    });
+  });
+
+  renderTasks();
 }
 
 function dailyPlanner() {
   const dayPlanner = document.querySelector(".planner-wrapper");
   const dayPlanData = JSON.parse(localStorage.getItem("dayPlanData")) || {};
+
+  if (!dayPlanner) return;
 
   let hours = Array.from(
     { length: 18 },
@@ -117,8 +240,12 @@ function dailyPlanner() {
 }
 
 function motivationalQuotes() {
-  const quote = document.querySelector(".middle-quote h2");
-  const author = document.querySelector(".bottom-author p");
+  const quote = document.querySelector(".quote-text");
+  const author = document.querySelector(".quote-author");
+  const date = document.querySelector(".quote-date");
+  const container = document.querySelector(".quote-container");
+
+  date.textContent = new Date().toDateString();
 
   async function randomQuoteGenerator() {
     try {
@@ -126,27 +253,49 @@ function motivationalQuotes() {
       const response = await fetch(URL);
       const data = await response.json();
 
-      quote.innerHTML = `<h2>${data[0].quote}</h2>`;
-      author.innerHTML = `<p>- ${data[0].author}</p>`;
+      const quoteData = data[0];
+
+      localStorage.setItem("dailyQuote", JSON.stringify(quoteData));
+
+      renderQuote(quoteData);
     } catch (error) {
       console.error("Error fetching quote:", error);
     }
   }
-  randomQuoteGenerator();
+
+  function renderQuote(data) {
+    quote.classList.remove("show");
+
+    quote.innerHTML = `<h3>${data.quote}</h3>`;
+    author.innerHTML = `<p>${data.author}</p>`;
+
+    setTimeout(() => {
+      quote.classList.add("show");
+    }, 100);
+  }
+
+  const saved = localStorage.getItem("dailyQuote");
+  if (saved) {
+    renderQuote(JSON.parse(saved));
+  } else {
+    randomQuoteGenerator();
+  }
+
+  container.addEventListener("click", randomQuoteGenerator);
 }
 function pomodoroTimer() {
   const startBtn = document.querySelector(".start-timer");
   const pauseBtn = document.querySelector(".pause-timer");
   const resetBtn = document.querySelector(".reset-timer");
 
-  const timer = document.querySelector(".pomodoro-timer h1");
+  const timer = document.querySelector("#timer-display");
   const circle = document.querySelector(".pomodoro-timer");
   const session = document.querySelector(".session h4");
 
   let isWorkSession = true;
   let totalSeconds = 25 * 60;
   let initialDuration = 25 * 60;
-  let timerInterval = null;
+  let timeInterval = null;
 
   function updateProgress() {
     const progressRatio = 1 - totalSeconds / initialDuration;
@@ -173,6 +322,7 @@ function pomodoroTimer() {
     let minutes = Math.floor(totalSeconds / 60);
     let seconds = totalSeconds % 60;
 
+    if (!timer) return;
     timer.innerHTML = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
     updateProgress();
@@ -197,35 +347,42 @@ function pomodoroTimer() {
   }
 
   function startTimer() {
-    if (timerInterval) return;
+    if (timeInterval) return;
 
-    timerInterval = setInterval(() => {
+    startBtn.hidden = true;
+    pauseBtn.hidden = false;
+
+    timeInterval = setInterval(() => {
       if (totalSeconds > 0) {
         totalSeconds--;
         updateTimer();
       } else {
-        clearInterval(timerInterval);
-        timerInterval = null;
+        clearInterval(timeInterval);
+        timeInterval = null;
         switchSession();
       }
-    }, 1000); // REAL seconds
+    }, 1000);
   }
-
   function pauseTimer() {
-    clearInterval(timerInterval);
-    timerInterval = null;
+    clearInterval(timeInterval);
+    timeInterval = null;
+
+    startBtn.hidden = false;
+    pauseBtn.hidden = true;
   }
 
   function resetTimer() {
-    clearInterval(timerInterval);
-    timerInterval = null;
+    clearInterval(timeInterval);
+    timeInterval = null;
+
+    startBtn.hidden = false;
+    pauseBtn.hidden = true;
 
     isWorkSession = true;
     totalSeconds = 25 * 60;
     initialDuration = 25 * 60;
 
     session.innerHTML = "Deep Work";
-    session.style.backgroundColor = "var(--green)";
 
     updateTimer();
   }
@@ -236,40 +393,6 @@ function pomodoroTimer() {
   pauseBtn.addEventListener("click", pauseTimer);
   resetBtn.addEventListener("click", resetTimer);
 }
-function changeTheme() {
-  const theme = document.querySelector(".theme");
-  const rootElement = document.documentElement;
-
-  let flag = 0;
-  theme.addEventListener("click", function () {
-    if (flag == 0) {
-      rootElement.style.setProperty("--pri", "#FFF7CD");
-      rootElement.style.setProperty("--sec", "#FDC3A1");
-      rootElement.style.setProperty("--tri1", "#FB9B8F");
-      rootElement.style.setProperty("--tri2", "#b35b72");
-      flag = 1;
-    } else if (flag == 1) {
-      rootElement.style.setProperty("--pri", "#F7F8F0");
-      rootElement.style.setProperty("--sec", "#9CD5FF");
-      rootElement.style.setProperty("--tri1", "#7AAACE");
-      rootElement.style.setProperty("--tri2", "#355872");
-      flag = 2;
-    } else if (flag == 2) {
-      rootElement.style.setProperty("--pri", "#FFFDF1");
-      rootElement.style.setProperty("--sec", "#FFCE99");
-      rootElement.style.setProperty("--tri1", "#FF9644");
-      rootElement.style.setProperty("--tri2", "#562F00");
-      flag = 3;
-    } else if (flag == 3) {
-      rootElement.style.setProperty("--pri", "#E8F5BD");
-      rootElement.style.setProperty("--sec", "#C7EABB");
-      rootElement.style.setProperty("--tri1", "#A2CB8B");
-      rootElement.style.setProperty("--tri2", "#84B179");
-      flag = 0;
-    }
-  });
-}
-
 function visionBoard() {
   const cards = document.querySelectorAll(".grid-card");
 
@@ -294,6 +417,8 @@ function visionBoard() {
 
     input.addEventListener("change", (e) => {
       const file = e.target.files[0];
+
+      if (!file) return;
       const reader = new FileReader();
 
       reader.onload = function () {
@@ -320,10 +445,154 @@ function visionBoard() {
     });
   });
 }
-changeTheme();
+
+function habitTracker() {
+  const tracker = document.querySelector(".tracker");
+  const addHabitBtn = document.getElementById("add-habit-btn");
+  const modal = document.getElementById("habit-modal");
+  const closeModal = document.getElementById("close-modal");
+  const habitForm = document.getElementById("habit-form");
+  const habitInput = document.getElementById("habit-title");
+
+  let habits = [
+    { name: "Workout", days: [] },
+    { name: "Reading", days: [] },
+    { name: "Meditation", days: [] },
+  ];
+
+  function renderHabits() {
+    tracker.innerHTML = "";
+
+    habits.forEach((habit, index) => {
+      const card = document.createElement("div");
+      card.className = "tracker-grid";
+
+      // Title + progress %
+      const title = document.createElement("h2");
+      title.textContent = habit.name;
+
+      const completedDays = habit.days.length;
+      const totalDays = 21;
+      const progressPercent = Math.round((completedDays / totalDays) * 100);
+
+      const progressContainer = document.createElement("div");
+      progressContainer.className = "progress-container";
+
+      const progressBar = document.createElement("div");
+      progressBar.className = "progress";
+      progressBar.style.width = `${progressPercent}%`;
+
+      progressContainer.appendChild(progressBar);
+      card.appendChild(title);
+      card.appendChild(progressContainer);
+
+      // Habit days grid
+      const habitGrid = document.createElement("div");
+      habitGrid.className = "habit-grid";
+
+      for (let day = 1; day <= totalDays; day++) {
+        const dayDiv = document.createElement("div");
+        dayDiv.className = "habit-day";
+        dayDiv.textContent = day;
+
+        if (habit.days.includes(day)) {
+          dayDiv.classList.add("completed");
+        }
+
+        dayDiv.addEventListener("click", () => {
+          if (habit.days.includes(day)) {
+            habit.days = habit.days.filter((d) => d !== day);
+          } else {
+            habit.days.push(day);
+          }
+          renderHabits();
+        });
+
+        habitGrid.appendChild(dayDiv);
+      }
+
+      card.appendChild(habitGrid);
+      tracker.appendChild(card);
+    });
+  }
+
+  // Modal open/close
+  addHabitBtn.addEventListener("click", () => modal.removeAttribute("hidden"));
+  closeModal.addEventListener("click", () =>
+    modal.setAttribute("hidden", true),
+  );
+
+  // Add habit
+  habitForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const habitName = habitInput.value.trim();
+    if (habitName) {
+      habits.push({ name: habitName, days: [] });
+      habitInput.value = "";
+      modal.setAttribute("hidden", true);
+      renderHabits();
+    }
+  });
+
+  renderHabits();
+}
+
+function changeTheme() {
+  const themeBtn = document.querySelector(".theme-toggle");
+
+  const themes = [
+    {
+      pri: "#FFF7CD",
+      sec: "#FDC3A1",
+      tri1: "#FB9B8F",
+      tri2: "#b35b72",
+    },
+    {
+      pri: "#F7F8F0",
+      sec: "#9CD5FF",
+      tri1: "#7AAACE",
+      tri2: "#355872",
+    },
+    {
+      pri: "#FFFDF1",
+      sec: "#FFCE99",
+      tri1: "#FF9644",
+      tri2: "#562F00",
+    },
+    {
+      pri: "#F7F7F7",
+      sec: "#777c8b",
+      tri1: "#393E46",
+      tri2: "#222831",
+    },
+  ];
+
+  let currentIndex = parseInt(localStorage.getItem("themeIndex")) || 0;
+
+  themeBtn.addEventListener("click", function () {
+    currentIndex = (1 + currentIndex) % themes.length;
+
+    applyTheme(currentIndex);
+
+    localStorage.setItem("themeIndex", currentIndex);
+  });
+
+  function applyTheme(index) {
+    const rootElement = document.documentElement;
+
+    rootElement.style.setProperty("--pri", themes[index].pri);
+    rootElement.style.setProperty("--sec", themes[index].sec);
+    rootElement.style.setProperty("--tri1", themes[index].tri1);
+    rootElement.style.setProperty("--tri2", themes[index].tri2);
+  }
+}
+
+openSideBar();
 openCloseFeature();
-todoList();
-dailyPlanner();
-motivationalQuotes();
-pomodoroTimer();
+taskEngine();
 visionBoard();
+habitTracker();
+dailyPlanner();
+pomodoroTimer();
+motivationalQuotes();
+changeTheme();
