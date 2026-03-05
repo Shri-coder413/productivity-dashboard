@@ -1,174 +1,169 @@
 # 📌 Productivity Dashboard
 
-A full-stack productivity dashboard built with **Node.js**, **Express**, and **Vanilla JavaScript**, 
-designed to help users manage daily tasks, plan schedules, stay focused with a Pomodoro timer, and 
-get inspired by a dynamic **Quote of the Day** from an external API.
+A minimal full-stack productivity dashboard built with **Vanilla JavaScript, Node.js, and Express** to help users organize their day, stay focused, and stay motivated.
+
+The application combines **task management, habit tracking, scheduling, focus sessions, and daily motivation** into one lightweight interface.
 
 ---
 
-🚀 Live Demo
+# 🔗 Live Demo
 
-* Frontend: [https://productivity-dashboard-eight-tau.vercel.app/](https://productivity-dashboard-eight-tau.vercel.app/)
+**Frontend**
+[https://productivity-dashboard-eight-tau.vercel.app/](https://productivity-dashboard-eight-tau.vercel.app/)
 
-* Backend API: https://your-render-url.onrender.com/api/quote
-
----
-
-## 🧠 Features
-
-* **Quote of the Day** – secured via backend API proxy
-* **Todo List** – with LocalStorage persistence
-* **Daily Planner** – hourly schedule with auto-save
-* **Pomodoro Timer** – 25/5 work-break cycle
-* **Dynamic Theme Switcher** – light/dark mode
-* **Fully Responsive Layout**
-* **Secure API key handling** using environment variables
+**Backend API**
+[https://productivity-dashboard-vnug.onrender.com/api/quote](https://productivity-dashboard-vnug.onrender.com/api/quote)
 
 ---
 
-## 🏗️ Architecture
+# ✨ Features
 
-```
-Frontend (Vercel)
-      ⬇ Fetch Request
-Backend (Render - Express API)
-      ⬇ Secure API Call
-API Ninjas Quote API
-```
+### 📝 Todo List
 
-> API keys are never exposed to the frontend.
+Create and manage daily tasks with **LocalStorage persistence**.
+
+### 📅 Daily Planner
+
+Plan your day with an **hourly schedule** that automatically saves progress.
+
+### 🔁 Habit Tracker
+
+Track recurring habits and monitor daily consistency.
+
+### ⏱ Pomodoro Timer
+
+Built-in **25 / 5 focus timer** to structure work sessions and breaks.
+
+### 💬 Quote of the Day
+
+Motivational quotes fetched securely through a **backend API proxy**.
+
+### 🎨 Theme Switcher
+
+Toggle between **light and dark modes**.
+
+### 📱 Responsive Design
+
+Optimized layout for **desktop, tablet, and mobile devices**.
 
 ---
 
-## 🛠️ Tech Stack
+# 🛠 Tech Stack
 
-**Frontend:**
+### Frontend
 
 * HTML5
 * CSS3
-* JavaScript (ES6+)
+* JavaScript (ES6)
 * LocalStorage API
 
-**Backend:**
+### Backend
 
 * Node.js
 * Express.js
 * CORS
 * dotenv
 
-**Deployment:**
+### Deployment
 
-* Vercel (Frontend)
-* Render (Backend)
+* **Vercel** – Frontend hosting
+* **Render** – Backend API hosting
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
 
 ```
-Productivity-Dashboard/
+Productivity-Dashboard
 │
-├── BackEnd/
+├── BackEnd
 │   ├── server.js
 │   ├── package.json
-│   └── .env          # not committed
+│   └── .env
 │
-├── FrontEnd/
+├── FrontEnd
 │   ├── index.html
 │   ├── style.css
 │   ├── script.js
-│   └── assets/
+│   └── assets
 │
 └── README.md
 ```
+
 ---
 
-## 💻 Local Development Setup
+# ⚙️ Running Locally
 
-1. **Clone the repository**
+### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/productivity-dashboard.git
+git clone https://github.com/Shri-coder413/productivity-dashboard.git
 cd productivity-dashboard
 ```
 
-2. **Install backend dependencies**
+---
+
+### 2️⃣ Setup Backend
 
 ```bash
 cd BackEnd
 npm install
 ```
 
-3. **Add environment variable**
-   Create `.env` inside `BackEnd/`:
+Create `.env`
+
 ```
 API_KEY=your_api_key_here
 ```
 
-4. **Run backend**
+Run the server
 
 ```bash
 node server.js
 ```
 
-Backend runs at: `http://localhost:3000`
+Backend runs at
 
-5. **Run frontend**
-   Open `FrontEnd/index.html` using Live Server
-   **OR**
-
-```bash
-cd FrontEnd
-npx serve .
+```
+http://localhost:3000
 ```
 
-Frontend runs at: `http://127.0.0.1:5500`
+---
+
+### 3️⃣ Run Frontend
+
+Open
+
+```
+FrontEnd/index.html
+```
+
+or run using Live Server.
 
 ---
 
-## 📦 Deployment
+# 🔐 API Security
 
-**Backend (Render)**
-
-* Root Directory: `BackEnd`
-* Build Command: `npm install`
-* Start Command: `node server.js`
-* Add Environment Variable: `API_KEY`
-
-**Frontend (Vercel)**
-
-* Root Directory: `FrontEnd`
-* Framework: Other
-* Update frontend fetch URL to production backend URL before deployment
+The external quote API is accessed through a **backend proxy**, ensuring the API key remains hidden and is never exposed to the client.
 
 ---
 
-## 🧪 Key Learning Outcomes
+# 🚀 Future Improvements
 
-* API integration with secure backend proxy
-* Environment variable management
-* LocalStorage persistence
-* Client-server architecture
-* CORS handling
-* Production deployment workflow
-* Meaningful Git commit practices
-
----
-
-## 📈 Future Improvements
-
-* User authentication system
-* Database integration (MongoDB/PostgreSQL)
+* User authentication
+* Database integration
 * Drag-and-drop task management
-* Analytics dashboard
+* Habit analytics and streak tracking
 * PWA support
-* Dark mode auto-detection
+* Pomodoro session statistics
 
 ---
 
-## 👤 Author
+# 👤 Author
 
 **Shrinivas Nakadi**
-* LinkedIn: [https://www.linkedin.com/in/shrinivas-nakadi-2b48b1240/](https://www.linkedin.com/in/shrinivas-nakadi-2b48b1240/)
+
+LinkedIn
+[https://www.linkedin.com/in/shrinivas-nakadi-2b48b1240/](https://www.linkedin.com/in/shrinivas-nakadi-2b48b1240/)
 
 ---
