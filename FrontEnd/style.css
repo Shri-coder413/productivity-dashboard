@@ -44,6 +44,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: aeonik;
+  /* outline: 1px solid white; */
 }
 
 html,
@@ -60,7 +61,7 @@ body {
 
 /*BASE LAYOUT STRUCTURE*/
 main#app {
-  height: 100dvh;
+  min-height: 100dvh;
   position: relative;
   max-width: 1800px;
   margin: 0 auto;
@@ -269,7 +270,6 @@ nav .theme-toggle:hover {
   left: 0;
 
   background-color: var(--tri2);
-  overflow: hidden;
   transition: opacity 0.3s ease;
 }
 
@@ -280,12 +280,12 @@ nav .theme-toggle:hover {
 }
 
 .section-header {
-  width: 80%;
-  padding: var(--space-xs);
-  margin: 2px auto;
+  width: 85%;
   display: flex;
+  margin: 2px auto;
   align-items: center;
-  gap: 20px;
+  padding: var(--space-xs);
+  justify-content: center;
 }
 
 .section-header h2 {
@@ -312,7 +312,6 @@ nav .theme-toggle:hover {
   text-transform: uppercase;
 }
 
-/* TODO CONTAINER  */
 .todo-layout {
   width: 85%;
   margin: 0 auto;
@@ -493,7 +492,7 @@ nav .theme-toggle:hover {
 /* DAILY PLANNER */
 section#planner-view {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
 }
 
 .planner-wrapper {
@@ -549,8 +548,8 @@ section#planner-view {
 
 /* QUOTE SECTION */
 section#quote-view {
-  height: 100%;
   width: 100%;
+  min-height: 100vh;
 }
 
 .quote-wrapper {
@@ -660,7 +659,7 @@ img#left-quote-icon {
 /* POMODORO TIMER */
 section#pomodoro-view {
   width: 100%;
-  height: 80vh;
+  min-height: 100vh;
 }
 .pomodoro-wrapper {
   width: 80%;
@@ -738,23 +737,20 @@ section#pomodoro-view {
   background-color: var(--tri1);
   color: var(--tri2);
 }
-.pomodoro-controls button:active{
+.pomodoro-controls button:active {
   opacity: 0.5;
-  border-color:var(--white);
+  border-color: var(--white);
 }
 /* HABIT SECTION */
 section#habit-view {
-  height: 100%;
+  width: 100%;
   min-height: 100vh;
 }
 
-.section-header {
-  width: 80%;
-}
-
 .section-header h2 {
-  font-size: clamp(1.8rem, 1.8vw, 1.5rem);
+  font-size: clamp(1.5rem, 1.8vw, 2rem);
   font-weight: 700;
+  text-align: center;
   margin-top: var(--space-md);
 }
 
@@ -762,13 +758,15 @@ section#habit-view {
   width: 100%;
   margin: 0 auto;
 }
-
+.tool {
+  width: 85%;
+  margin: 0 auto;
+}
 #add-habit-btn {
-  align-self: center;
   color: var(--white);
-  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
   padding: var(--space-sm) var(--space-xs);
   border-radius: var(--radius-sm);
   border: 2px solid var(--white);
@@ -777,21 +775,25 @@ section#habit-view {
 #add-habit-btn i {
   margin-right: 5px;
 }
+#add-habit-btn:hover {
+  background: var(--sec);
+  color: var(--tri2);
+}
 .tracker {
   width: 85%;
   margin: 0 auto;
   display: grid;
   gap: 2vw;
-  padding: var(--space-md);
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  padding-block: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
 /* Habit Card */
 .tracker-grid {
   background-color: var(--sec);
   border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+  padding: 1.2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .tracker-grid h2 {
@@ -824,12 +826,11 @@ section#habit-view {
 /* Habit Days Grid */
 .habit-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
   gap: var(--space-sm);
 }
 
 .habit-day {
-  width: 100%;
   aspect-ratio: 1 / 1;
   color: var(--tri1);
   background-color: var(--white);
@@ -839,12 +840,12 @@ section#habit-view {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size:clamp(1.8rem, 1vw, 1rem);
+  font-size: clamp(1rem, 1vw, 1.8rem);
   font-weight: 700;
   transition: all 0.2s ease;
 }
 
-.habit-day:hover{
+.habit-day:hover {
   background-color: var(--pri);
 }
 
@@ -1030,6 +1031,10 @@ section#habit-view {
 }
 
 @media (max-width: 768px) {
+  .section-header {
+    width: 100%;
+  }
+
   .todo-layout {
     width: 100%;
     flex-direction: column-reverse;
@@ -1045,8 +1050,6 @@ section#habit-view {
     bottom: 0;
     left: 0;
     z-index: 99;
-    background: var(--tri1);
-    color: var(--white);
   }
 
   #tags {
@@ -1091,6 +1094,10 @@ section#habit-view {
     gap: 10px;
   }
 
+  .section-header {
+    width: 100%;
+  }
+
   .pomodoro-wrapper {
     width: 95%;
   }
@@ -1104,5 +1111,12 @@ section#habit-view {
     width: 100%;
     padding: 0.5rem;
     grid-template-columns: 100%;
+  }
+
+  section {
+    padding: 0;
+  }
+  .tracker {
+    padding: var(--space-xs) 0;
   }
 }

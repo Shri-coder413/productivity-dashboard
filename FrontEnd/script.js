@@ -54,10 +54,6 @@ function openSideBar() {
 }
 
 function taskEngine() {
-  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  let runningTaskId = null;
-  let currentFilter = "active";
-
   const form = document.querySelector("#task-form");
   const taskList = document.querySelector(".task-list");
   const filters = document.querySelectorAll(".filter");
@@ -65,7 +61,15 @@ function taskEngine() {
 
   if (!form) return;
 
-  function todayStamp() {
+  /* ---------------- STATE ---------------- */
+
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  let currentFilter = "active";
+  let runningTaskId = null;
+
+  /* ---------------- UTILITIES ---------------- */
+
+  function getTodayDate() {
     return new Date().toISOString().split("T")[0];
   }
 
@@ -73,29 +77,81 @@ function taskEngine() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }
 
-  function activeCount() {
-    return tasks.filter((t) => !t.completed && t.dailyStamp === todayStamp())
-      .length;
+  /* ---------------- LIMIT CHECKS ---------------- */
+
+  function getActiveTaskCount() {
+    return tasks.filter((task) => !task.completed).length;
   }
 
-  function dailyCount() {
-    return tasks.filter((t) => t.dailyStamp === todayStamp()).length;
+  function getDailyTaskCount() {
+    const today = getTodayDate();
+    return tasks.filter((task) => task.dailyStamp === today).length;
+  }
+
+  /* ---------------- CREATE TASK ---------------- */
+
+  function addTask(title, minutes, priority) {
+    const newTask = {
+      id: Date.now(),
+      title: title,
+      minutes: minutes,
+      priority: priority,
+      startedAt: null,
+      completed: false,
+      dailyStamp: getTodayDate(),
+    };
+
+    tasks.push(newTask);
+
+    saveTasks();
+    renderTasks();
+  }
+
+  /* ---------------- TIMER ---------------- */
+
+  function startTaskTimer(task, overlay) {
+    const totalTime = task.minutes * 60000;
+
+    const interval = setInterval(() => {
+      const elapsedTime = Date.now() - task.startedAt;
+      const progress = elapsedTime / totalTime;
+
+      overlay.style.width = progress * 100 + "%";
+
+      if (progress >= 1) {
+        clearInterval(interval);
+
+        task.completed = true;
+        runningTaskId = null;
+
+        saveTasks();
+        renderTasks();
+      }
+    }, 1000);
   }
 
   function renderTasks() {
     taskList.innerHTML = "";
 
-    const filteredTasks = tasks
+    const visibleTasks = tasks
       .filter((task) =>
         currentFilter === "active" ? !task.completed : task.completed,
       )
       .sort((a, b) => a.priority - b.priority);
 
-    emptyState.style.display = filteredTasks.length === 0 ? "block" : "none";
+    if (visibleTasks.length === 0) {
+      emptyState.style.display = "block";
+    } else {
+      emptyState.style.display = "none";
+    }
 
-    filteredTasks.forEach((task) => {
+    visibleTasks.forEach((task) => {
       const taskDiv = document.createElement("div");
-      taskDiv.className = `task ${task.completed ? "completed" : ""}`;
+      taskDiv.className = "task";
+
+      if (task.completed) {
+        taskDiv.classList.add("completed");
+      }
 
       taskDiv.innerHTML = `
         <div class="task-overlay"></div>
@@ -104,6 +160,7 @@ function taskEngine() {
           <div class="task-title">
             ${task.priority} ${task.title}
           </div>
+
           <div class="task-meta">
             ${task.minutes} minutes
           </div>
@@ -116,62 +173,43 @@ function taskEngine() {
       const startBtn = taskDiv.querySelector(".start-btn");
 
       if (task.startedAt && !task.completed) {
-        startBtn.classList.add("running");
         startBtn.textContent = "Running";
-        startTimer(task, overlay);
+        startBtn.classList.add("running");
+        startTaskTimer(task, overlay);
       }
 
-      startBtn?.addEventListener("click", () => {
-        if (runningTaskId) {
-          alert("Only one task at a time.");
-          return;
-        }
+      if (startBtn) {
+        startBtn.addEventListener("click", () => {
+          if (runningTaskId) {
+            alert("Finish the current task first.");
+            return;
+          }
 
-        task.startedAt = Date.now();
-        runningTaskId = task.id;
+          task.startedAt = Date.now();
+          runningTaskId = task.id;
 
-        startBtn.classList.add("running");
-        startBtn.textContent = "Running";
+          startBtn.textContent = "Running";
+          startBtn.classList.add("running");
 
-        saveTasks();
-        startTimer(task, overlay);
-      });
+          saveTasks();
+          startTaskTimer(task, overlay);
+        });
+      }
 
       taskList.appendChild(taskDiv);
     });
-
-    saveTasks();
   }
 
-  function startTimer(task, overlay) {
-    const totalTime = task.minutes * 60000;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-    const interval = setInterval(() => {
-      const elapsedTime = Date.now() - task.startedAt;
-      const progress = Math.min(elapsedTime / totalTime, 1);
-
-      overlay.style.width = progress * 100 + "%";
-
-      if (progress >= 1) {
-        clearInterval(interval);
-        task.completed = true;
-        runningTaskId = null;
-        saveTasks();
-        renderTasks();
-      }
-    }, 1000);
-  }
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    if (activeCount() >= 3) {
-      alert("Complete 3 tasks first.");
+    if (getActiveTaskCount() >= 3) {
+      alert("You can only have 3 active tasks.");
       return;
     }
 
-    if (dailyCount() >= 5) {
-      alert("Daily limit reached.");
+    if (getDailyTaskCount() >= 5) {
+      alert("Daily task limit reached.");
       return;
     }
 
@@ -179,28 +217,22 @@ function taskEngine() {
     const minutes = parseInt(document.querySelector("#task-time").value);
     const priority = parseInt(document.querySelector("#task-priority").value);
 
-    tasks.push({
-      id: Date.now(),
-      title: title,
-      minutes: minutes,
-      priority: priority,
-      createdAt: Date.now(),
-      startedAt: null,
-      completed: false,
-      dailyStamp: todayStamp(),
-    });
+    addTask(title, minutes, priority);
 
     form.reset();
-    saveTasks();
-    renderTasks();
   });
 
   filters.forEach((button) => {
-    button.addEventListener("click", function () {
-      document.querySelector(".filter.active").classList.remove("active");
+    button.addEventListener("click", () => {
+      const activeButton = document.querySelector(".filter.active");
 
-      this.classList.add("active");
-      currentFilter = this.dataset.filter;
+      if (activeButton) {
+        activeButton.classList.remove("active");
+      }
+
+      button.classList.add("active");
+
+      currentFilter = button.dataset.filter;
 
       renderTasks();
     });
@@ -454,7 +486,7 @@ function habitTracker() {
   const habitForm = document.getElementById("habit-form");
   const habitInput = document.getElementById("habit-title");
 
-  let habits = [
+  let habits = JSON.parse(localStorage.getItem("habits")) || [
     { name: "Workout", days: [] },
     { name: "Reading", days: [] },
     { name: "Meditation", days: [] },
@@ -462,8 +494,9 @@ function habitTracker() {
 
   function renderHabits() {
     tracker.innerHTML = "";
+    localStorage.setItem("habits", JSON.stringify(habits));
 
-    habits.forEach((habit, index) => {
+    habits.forEach((habit) => {
       const card = document.createElement("div");
       card.className = "tracker-grid";
 
@@ -576,7 +609,6 @@ function changeTheme() {
 
     localStorage.setItem("themeIndex", currentIndex);
   });
-
   function applyTheme(index) {
     const rootElement = document.documentElement;
 
