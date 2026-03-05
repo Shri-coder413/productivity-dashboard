@@ -728,24 +728,6 @@ section#pomodoro-view {
   gap: 1.5rem;
 }
 
-/* .pomodoro-controls button {
-  padding: var(--space-sm);
-  font-size: 1.5rem;
-  font-weight: 500;
-  cursor: pointer;
-  color: var(--white);
-  border: 2px solid var(--pri);
-  background-color: transparent;
-  transition:
-    transform 0.1s ease,
-    opacity 0.1s ease;
-}
-
-.pomodoro-controls button:active {
-  transform: scale(0.98);
-  opacity: 0.9;
-} */
-
 .pomodoro-controls button {
   padding: var(--space-xs) var(--space-md);
   font-size: 1.1rem;
