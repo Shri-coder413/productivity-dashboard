@@ -1,0 +1,233 @@
+section#habit-view {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.habit-wrapper {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.tracker {
+  width: 85%;
+  margin: 0 auto;
+  display: grid;
+  gap: 2vw;
+  padding-block: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.tracker-grid {
+  background-color: var(--sec);
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.habit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: var(--space-sm);
+}
+
+.habit-day {
+  aspect-ratio: 1 / 1;
+  color: var(--tri1);
+  background-color: var(--white);
+  border: 3px solid var(--white);
+  border-radius: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: clamp(1rem, 1vw, 1.8rem);
+  font-weight: 700;
+}
+
+.habit-day.completed {
+  background-color: var(--tri1);
+  color: var(--white);
+}
+
+section#habit-view {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* section header */
+
+.section-header h2 {
+  font-size: clamp(1.5rem, 1.8vw, 2rem);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* wrapper */
+
+.habit-wrapper {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.tool {
+  width: 85%;
+  margin: 0 auto;
+}
+
+/* add habit button */
+
+#add-habit-btn {
+  color: var(--white);
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+  padding: var(--space-sm) var(--space-xs);
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--white);
+  background-color: var(--tri1);
+}
+
+#add-habit-btn i {
+  margin-right: 5px;
+}
+
+#add-habit-btn:hover {
+  background: var(--sec);
+  color: var(--tri2);
+}
+
+/* tracker grid */
+
+.tracker {
+  width: 85%;
+  margin: 0 auto;
+  display: grid;
+  gap: 2vw;
+  padding-block: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+/* habit card */
+
+.tracker-grid {
+  background-color: var(--sec);
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.tracker-grid h2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 1.5em;
+  color: var(--tri2);
+}
+
+/* progress bar */
+
+.progress-container {
+  width: 100%;
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  height: 10px;
+  margin-bottom: 1rem;
+}
+
+.progress {
+  height: 100%;
+  width: 50%;
+  background-color: var(--green);
+  transition: width 0.3s ease;
+  border-radius: 8px;
+}
+
+/* habit days grid */
+
+.habit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: var(--space-sm);
+}
+
+.habit-day {
+  aspect-ratio: 1 / 1;
+  color: var(--tri1);
+  background-color: var(--white);
+  border: 3px solid var(--white);
+  border-radius: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: clamp(1rem, 1vw, 1.8rem);
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.habit-day:hover {
+  background-color: var(--pri);
+}
+
+.habit-day.completed {
+  background-color: var(--tri1);
+  color: var(--white);
+  transform: scale(1.05);
+}
+
+/* modal */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.modal[hidden] {
+  display: none;
+}
+
+.modal-content {
+  background: rgba(0, 0, 0, 0.3);
+  padding: var(--space-lg);
+  border-radius: var(--radius-sm);
+  width: 90%;
+  max-width: 400px;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-content input {
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--radius-sm);
+}
+
+.modal-content button {
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-content button[type="submit"] {
+  background-color: var(--tri1);
+  color: var(--white);
+}
+
+.modal-content button[type="button"] {
+  background-color: var(--red);
+}

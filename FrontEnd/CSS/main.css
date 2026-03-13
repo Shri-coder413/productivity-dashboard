@@ -1,0 +1,14 @@
+@import "./layout/global.css";
+
+@import "./layout/header.css";
+@import "./layout/sidebar.css";
+@import "./layout/app.css";
+
+@import "./pages/tasks.css";
+@import "./pages/planner.css";
+@import "./pages/quotes.css";
+@import "./pages/pomodoro.css";
+@import "./pages/habits.css";
+@import "./pages/vision.css";
+
+@import "./responsive.css";

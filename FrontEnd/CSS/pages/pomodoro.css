@@ -1,0 +1,89 @@
+section#pomodoro-view {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.pomodoro-wrapper {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md);
+  gap: 5vw;
+}
+
+.pomodoro-timer {
+  width: min(85vw, 380px);
+  height: min(85vw, 380px);
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  background:
+    conic-gradient(var(--green) 0deg, transparent 0deg),
+    radial-gradient(circle, var(--tri1), var(--tri2));
+
+  transition: background 0.3s linear;
+}
+
+.pomodoro-timer #timer-display {
+  font-family: system-ui, sans-serif;
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 700;
+  color: var(--pri);
+  white-space: nowrap;
+}
+
+/* SESSION LABEL */
+
+.session {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 20px;
+  border: 1px solid var(--white);
+  background-color: rgba(0, 255, 0, 0.3);
+}
+
+.session h4 {
+  padding: 6px 16px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--white);
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.pomodoro-controls {
+  width: 100%;
+  max-width: 400px;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.pomodoro-controls button {
+  padding: var(--space-xs) var(--space-md);
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 14px;
+  cursor: pointer;
+  border: 2px solid var(--tri1);
+  background-color: var(--tri1);
+  color: var(--tri2);
+}
+
+.pomodoro-controls button:active {
+  opacity: 0.5;
+  border-color: var(--white);
+}

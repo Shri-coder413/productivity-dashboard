@@ -1,0 +1,44 @@
+/* BASE LAYOUT STRUCTURE */
+
+main#app {
+  min-height: 100dvh;
+  position: relative;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+section {
+  padding: var(--space-md) var(--space-lg);
+}
+
+/* media defaults */
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* APP VIEW SYSTEM */
+
+.app-view {
+  display: none;
+  opacity: 0;
+  width: 100%;
+  min-height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--tri2);
+  transition: opacity 0.3s ease;
+}
+
+.app-view.active {
+  display: block;
+  opacity: 1;
+  z-index: 9;
+}

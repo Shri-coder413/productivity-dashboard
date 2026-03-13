@@ -1,0 +1,125 @@
+@media (max-width: 1024px) {
+  .todo-layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .todo-add,
+  .task-list {
+    width: 100%;
+    height: auto;
+  }
+
+  .todo-layout {
+    flex-direction: column;
+  }
+
+  .todo-add,
+  .todo-list-section {
+    width: 100%;
+  }
+
+  #vision-board {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .section {
+    left: -10%;
+  }
+
+  .quote-wrapper {
+    width: 80%;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-header {
+    width: 100%;
+  }
+
+  .todo-layout {
+    width: 100%;
+    flex-direction: column-reverse;
+  }
+
+  .todo-add,
+  .todo-list-section {
+    width: 100%;
+  }
+
+  .todo-add {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+  }
+
+  #tags {
+    flex-wrap: wrap;
+  }
+
+  .task {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .planner-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-wrapper {
+    width: 90%;
+    height: auto;
+  }
+
+  .quote-text h2 {
+    font-size: 1.3rem;
+    line-height: 1.4;
+  }
+
+  .pomodoro-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  #vision-board {
+    width: 100%;
+    padding: 0.5rem;
+    grid-template-columns: 100%;
+  }
+}
+
+@media (max-width: 540px) {
+  nav {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .section-header {
+    width: 100%;
+  }
+
+  .pomodoro-wrapper {
+    width: 95%;
+  }
+
+  .pomodoro-timer {
+    width: 75vw;
+    height: 75vw;
+  }
+
+  #vision-board {
+    width: 100%;
+    padding: 0.5rem;
+    grid-template-columns: 100%;
+  }
+
+  section {
+    padding: 0;
+  }
+
+  .tracker {
+    padding: var(--space-xs) 0;
+  }
+}

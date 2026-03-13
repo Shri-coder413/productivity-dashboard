@@ -1,0 +1,87 @@
+/*FONTS*/
+@font-face {
+  font-family: aeonik;
+  font-weight: 200;
+  src: url("../../assets/fonts/AeonikTRIAL-Light.otf");
+}
+
+@font-face {
+  font-family: aeonik;
+  font-weight: 500;
+  src: url("../../assets/fonts/AeonikTRIAL-Regular.otf");
+}
+
+@font-face {
+  font-family: aeonik;
+  font-weight: 700;
+  src: url("../../assets/fonts/AeonikTRIAL-Bold.otf");
+}
+
+/*ROOT VARIABLES*/
+:root {
+  --pri: #f7ebaf;
+  --sec: #f8e4af;
+  --tri1: #ee8d42;
+  --tri2: #842a3b;
+
+  --green: rgb(3, 170, 3);
+  --white: whitesmoke;
+  --red: rgb(186, 15, 15);
+  --blue: #079dd9;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+
+/*GLOBAL RESET*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: aeonik;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  height: auto;
+  color: var(--white);
+  min-height: 100dvh;
+  background-color: var(--tri2);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+h1 {
+  font-size: clamp(1.4rem, 2vw, 2.2rem);
+}
+
+h2 {
+  font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+}
+
+p,
+input,
+textarea,
+button {
+  font-size: clamp(0.9rem, 1vw, 1rem);
+}

@@ -1,0 +1,106 @@
+section#quote-view {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.quote-wrapper {
+  width: 80%;
+  height: 500px;
+  margin: 4vw auto;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--sec), var(--pri));
+  box-shadow: 0 20px 60px rgba(132, 42, 59, 0.25);
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quote-wrapper:hover {
+  transform: scale(1.01);
+}
+
+.quote-container {
+  width: 100%;
+  padding: var(--space-xl);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  position: relative;
+}
+
+.quote-container:active {
+  scale: 0.95;
+}
+
+.quote-container > .quote-date {
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  opacity: 0.6;
+  color: var(--tri2);
+}
+
+.quote-container h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--tri2);
+  text-decoration: underline var(--tri1) 4px;
+}
+
+.quote-text {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.quote-text h3 {
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 2rem;
+  color: var(--tri2);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+
+.quote-text.show h3 {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.quote-author p {
+  font-size: clamp(1rem, 2vw, 2rem);
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--tri1);
+  position: relative;
+}
+
+.quote-author p::before {
+  content: "";
+  width: 40px;
+  height: 2px;
+  background: var(--tri1);
+  position: absolute;
+  left: -50px;
+  top: 50%;
+}
+
+/* quote icons */
+
+.quote-container img {
+  position: absolute;
+  width: 60px;
+  opacity: 0.3;
+}
+
+img#left-quote-icon {
+  top: 10%;
+  left: 10%;
+  transform: rotate(180deg);
+}
+
+#right-quote-icon {
+  bottom: 10%;
+  right: 10%;
+}

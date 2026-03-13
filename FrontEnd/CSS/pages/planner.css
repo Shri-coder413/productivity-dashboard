@@ -1,0 +1,54 @@
+section#planner-view {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.planner-wrapper {
+  width: 95%;
+  max-width: 1200px;
+  margin: var(--space-lg) auto;
+  padding: var(--space-md);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-md);
+  border-radius: var(--radius-lg);
+}
+
+.planner-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.plan {
+  border-radius: var(--radius-sm);
+  background-color: var(--tri1);
+  padding: var(--space-sm);
+}
+
+.plan:active {
+  border: 2px solid var(--white);
+}
+
+.plan input {
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--tri2);
+  background-color: var(--white);
+}
+
+.plan input::placeholder {
+  font-size: 2rem;
+  color: var(--white);
+}
+
+.plan p#time {
+  width: fit-content;
+  padding: 5px 10px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  background-color: var(--red);
+  color: var(--pri);
+}
